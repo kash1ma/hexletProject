@@ -6,24 +6,53 @@ const Index = ({ users }) => {
     const handleDelete = (id) => {
         Inertia.delete(`/users/${id}`);
     };
+    const formatDate = (dateString) => {
+        const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
 
     return (
-        <div>
+        <div className="container mt-5">
             <h1>Users</h1>
-            <InertiaLink href="/users/create">Create User</InertiaLink>
-            <ul>
-                {users.map((user) => (
-                    <li key={user.id}>
-                        {user.name} - {user.email}
-                        <InertiaLink href={`/users/${user.id}/edit`}>
-                            Edit
-                        </InertiaLink>
-                        <button onClick={() => handleDelete(user.id)}>
-                            Delete
-                        </button>
-                    </li>
-                ))}
-            </ul>
+            <InertiaLink href="/users/create" className="btn btn-primary mb-3">
+                Create User
+            </InertiaLink>
+            <table className="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Gender</th>
+                        <th>Birthdate</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((user) => (
+                        <tr key={user.id}>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                            <td>{user.gender}</td>
+                            <td>{formatDate(user.birthdate)}</td>
+                            <td>
+                                <InertiaLink
+                                    href={`/users/${user.id}/edit`}
+                                    className="btn btn-warning btn-sm mr-2"
+                                    style={{ marginRight: "8px" }}
+                                >
+                                    Edit
+                                </InertiaLink>
+                                <button
+                                    onClick={() => handleDelete(user.id)}
+                                    className="btn btn-danger btn-sm ml-2"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };

@@ -13,39 +13,62 @@ const Create = () => {
     };
 
     return (
-        <div>
+        <div className="container mt-5">
             <h1>Create User</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Name"
-                    required
-                />
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                    required
-                />
-                <select
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    required
-                >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-                <input
-                    type="date"
-                    value={birthdate}
-                    onChange={(e) => setBirthdate(e.target.value)}
-                    required
-                />
-                <button type="submit">Create</button>
+            <form onSubmit={handleSubmit} className="mt-4">
+                <div className="form-group">
+                    <label htmlFor="name">Name</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Enter name"
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <input
+                        type="email"
+                        className="form-control"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter email"
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="gender">Gender</label>
+                    <select
+                        className="form-control"
+                        id="gender"
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                        required
+                    >
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="furry">Furry</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="birthdate">Birthdate</label>
+                    <input
+                        type="date"
+                        className="form-control"
+                        id="birthdate"
+                        value={birthdate}
+                        onChange={(e) => setBirthdate(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary mt-3">
+                    Create
+                </button>
             </form>
         </div>
     );
