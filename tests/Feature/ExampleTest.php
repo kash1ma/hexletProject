@@ -14,16 +14,16 @@ class ExampleTest extends TestCase
     public function it_can_create_a_user()
     {
         $response = $this->post('/users', [
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
+            'name' => 'testuser',
+            'email' => 'test@example.com',
             'gender' => 'male',
             'birthdate' => '2000-01-01',
         ]);
 
         $response->assertRedirect('/users');
         $this->assertDatabaseHas('users', [
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
+            'name' => 'testuser',
+            'email' => 'test@example.com',
             'gender' => 'male',
             'birthdate' => '2000-01-01',
         ]);
@@ -46,19 +46,19 @@ class ExampleTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->put("/users/{$user->id}", [
-            'name' => 'Jane Doe',
-            'email' => 'jane@example.com',
+            'name' => 'user',
+            'email' => 'user@example.com',
             'gender' => 'female',
-            'birthdate' => '1990-01-01',
+            'birthdate' => '0001-01-01',
         ]);
 
         $response->assertRedirect('/users');
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'name' => 'Jane Doe',
-            'email' => 'jane@example.com',
+            'name' => 'user',
+            'email' => 'user@example.com',
             'gender' => 'female',
-            'birthdate' => '1990-01-01',
+            'birthdate' => '0001-01-01',
         ]);
     }
 
