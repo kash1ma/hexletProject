@@ -61,7 +61,7 @@ jobs:
         run: pwd
 
       - name: Add database path to .env
-        run: echo 'DB_DATABASE=/home/h4t0rihanzo/hexletProject/database/database.sqlite' >> .env
+        run: echo 'DB_DATABASE=/home/runner/work/hexletProject/hexletProject/database/database.sqlite' >> .env
 
       - name: Generate application key
         run: php artisan key:generate
