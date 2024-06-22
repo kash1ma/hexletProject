@@ -16,16 +16,13 @@ jobs:
           php-version: "8.3"
           extensions: mbstring, xml, sqlite3
 
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
-
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "18"
 
-      - name: Install npm dependencies
-        run: npm ci
+      - name: Install npm and composer dependencies
+        run: make install
 
       - name: Run Duster
         run: vendor/bin/duster lint
