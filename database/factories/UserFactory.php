@@ -20,7 +20,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'gender' => fake()->randomElement(['male', 'female']),
+            'gender' => fake()->randomElement(['male', 'female', 'furry']),
             'birthdate' => fake()->date(),
             'remember_token' => Str::random(10),
         ];
