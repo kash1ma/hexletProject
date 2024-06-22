@@ -57,6 +57,9 @@ jobs:
       - name: Copy .env.example to .env
         run: cp .env.example .env
 
+      - name: Run pwd
+        run: pwd
+
       - name: Add database path to .env
         run: echo 'DB_DATABASE=/home/h4t0rihanzo/hexletProject/database/database.sqlite' >> .env
 
