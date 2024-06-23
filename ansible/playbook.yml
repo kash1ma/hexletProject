@@ -19,7 +19,7 @@
         - php8.3-xml
         - apache2
 
-     - name: Install Docker
+    - name: Install Docker
       apt:
         name: docker.io
         state: present
