@@ -10,16 +10,17 @@ RUN apt-get update && apt-get install -y \
     git \
     zip \
     unzip \
+    node \
     && docker-php-ext-install pdo_sqlite
 
 # Устанавливаем Node.js через nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash \
-    && export NVM_DIR="$HOME/.nvm" \
-    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
-    && nvm install 18 \
-    && nvm use 18 \
-    && nvm alias default 18 \
-    && nvm install npm
+#RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash \
+#    && export NVM_DIR="$HOME/.nvm" \
+#    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+#    && nvm install 18 \
+#    && nvm use 18 \
+#    && nvm alias default 18 \
+#    && nvm install npm
 
 # Устанавливаем Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
