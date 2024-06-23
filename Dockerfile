@@ -40,6 +40,8 @@ RUN cp .env.example .env \
 && mkdir -p database \
     && echo 'DB_DATABASE=/home/h4t0rihanzo/hexletProject/database/database.sqlite' >> .env \
     && touch /home/h4t0rihanzo/hexletProject/database/database.sqlite \
+    && chown -R www-data:www-data /home/h4t0rihanzo/hexletProject/database/database \
+    && chmod -R 777 /home/h4t0rihanzo/hexletProject/database \
     && php artisan key:generate
 
 # Выполняем миграции
