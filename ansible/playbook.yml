@@ -46,8 +46,8 @@
         dest: /home/h4t0rihanzo/hexletProject/
         version:master
 
-    - name: Build the Docker image
-      command: docker build -t user-crud-app /home/h4t0rihanzo/hexletProject/
+    - name: Build Docker
+      command: docker build -t user-crud-app /home/h4t0rihanzo/hexletProject
 
     - name: Run the Docker container
       docker_container:
