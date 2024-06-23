@@ -19,62 +19,58 @@
         - php8.3-xml
         - apache2
 
-    - name: Install nvm
-      shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+     - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
 
-    - name: Source nvm
-      shell: . ~/.bashrc
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: present
 
-    - name: Install Node.js
-      shell: nvm install 18
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
 
-    - name: Use Node.js
-      shell: nvm use 18
+    - name: Stop Apache
+      service:
+        name: apache2
+        state: stopped
 
-    - name: Install npm dependencies
-      shell: npm ci
-      args:
-        chdir: /home/h4t0rihanzo/hexletProject
+    - name: Clone the repository
+      git:
+        repo: "https://github.com/kash1ma/hexletProject"
+        dest: /home/h4t0rihanzo/hexletProject/
+        version: main
 
-    - name: Install Composer dependencies
-      composer:
-        command: install
-        working_dir: /home/h4t0rihanzo/hexletProject
+    - name: Build the Docker image
+      command: docker build -t user-crud-app /home/h4t0rihanzo/hexletProject/
 
-    - name: Copy .env.example to .env
+    - name: Run the Docker container
+      docker_container:
+        name: user-crud-app
+        image: user-crud-app
+        state: started
+        restart_policy: always
+        ports:
+          - "80:80"
+
+    - name: Ensure Apache is running on port 8080
       copy:
-        src: /home/h4t0rihanzo/hexletProject/.env.example
-        dest: /home/h4t0rihanzo/hexletProject/.env
-
-    - name: Add database path to .env
-      lineinfile:
-        path: /home/h4t0rihanzo/hexletProject/.env
-        regexp: "^DB_DATABASE="
-        line: "DB_DATABASE=/home/h4t0rihanzo/hexletProject/database/database.sqlite"
-        create: yes
-
-    - name: Generate application key
-      shell: php artisan key:generate
-      args:
-        chdir: /home/h4t0rihanzo/hexletProject
-
-    - name: Run migrations
-      shell: php artisan migrate
-      args:
-        chdir: /home/h4t0rihanzo/hexletProject
-
-    - name: Set permissions on project folder
-      file:
-        path: /home/h4t0rihanzo/hexletProject
-        state: directory
-        mode: "0777"
-        recurse: yes
+        dest: /etc/apache2/ports.conf
+        content: |
+          Listen 8080
+      notify:
+        - Restart Apache
 
     - name: Create Apache config
       copy:
         dest: /etc/apache2/sites-available/hexletJob.conf
         content: |
-          <VirtualHost *:80>
+          <VirtualHost *:8080>
               ServerName 51.250.111.163
               DocumentRoot /home/h4t0rihanzo/hexletProject/public
               <Directory /home/h4t0rihanzo/hexletProject/public>
@@ -85,13 +81,20 @@
               ErrorLog ${APACHE_LOG_DIR}/error.log
               CustomLog ${APACHE_LOG_DIR}/access.log combined
           </VirtualHost>
+      notify:
+        - Restart Apache
 
     - name: Enable Apache site
-      shell: a2ensite hexletJob
+      command: a2ensite hexletJob
+      notify:
+        - Restart Apache
 
     - name: Enable Apache rewrite module
-      shell: a2enmod rewrite
+      command: a2enmod rewrite
+      notify:
+        - Restart Apache
 
+  handlers:
     - name: Restart Apache
       service:
         name: apache2

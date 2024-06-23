@@ -4,13 +4,20 @@ RUN apt-get update && apt-get install -y \
     sqlite3 \
     libsqlite3-dev \
     libxml2-dev \
+    git \
+    zip \
+    unzip \
     && docker-php-ext-install pdo_sqlite
 
 # Устанавливаем Node.js через nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash \
-    && . ~/.nvm/nvm.sh \
+    && export NVM_DIR="$HOME/.nvm" \
+    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
     && nvm install 18 \
-    && nvm use 18
+    && nvm use 18 \
+    && nvm alias default 18 \
+    && npm install -g npm
+
 
 # Устанавливаем Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -30,11 +37,14 @@ RUN npm ci \
 
 # Копируем .env.example в .env и генерируем ключ приложения
 RUN cp .env.example .env \
+&& mkdir -p database \
     && echo 'DB_DATABASE=/home/h4t0rihanzo/hexletProject/database/database.sqlite' >> .env \
+    && touch /home/h4t0rihanzo/hexletProject/database/database.sqlite \
     && php artisan key:generate
 
 # Выполняем миграции
 RUN php artisan migrate
+RUN make build
 
 # Настраиваем Apache
 RUN echo '<VirtualHost *:80>\n\
