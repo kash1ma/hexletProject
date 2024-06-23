@@ -1,4 +1,7 @@
+# Используем официальный образ PHP
 FROM php:8.3-apache
+
+# Устанавливаем необходимые зависимости
 RUN apt-get update && apt-get install -y \
     curl \
     sqlite3 \
@@ -16,8 +19,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | b
     && nvm install 18 \
     && nvm use 18 \
     && nvm alias default 18 \
-    && apt install npm -y
-
+    && npm install -g npm
 
 # Устанавливаем Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -31,10 +33,14 @@ RUN chown -R www-data:www-data /home/h4t0rihanzo/hexletProject \
 
 # Устанавливаем зависимости проекта
 WORKDIR /home/h4t0rihanzo/hexletProject
-RUN npm ci \
+
+# Устанавливаем зависимости проекта
+RUN export NVM_DIR="$HOME/.nvm" \
+    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+    && npm ci \
     && composer install \
     && npm install
-
+    
 # Копируем .env.example в .env и генерируем ключ приложения
 RUN cp .env.example .env \
 && mkdir -p database \
