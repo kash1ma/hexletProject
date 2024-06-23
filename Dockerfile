@@ -31,11 +31,10 @@ RUN chown -R www-data:www-data /home/h4t0rihanzo/hexletProject \
 
 # Устанавливаем зависимости проекта
 WORKDIR /home/h4t0rihanzo/hexletProject
-RUN export NVM_DIR="$HOME/.nvm" \
-    && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
-    && npm ci \
+RUN npm ci \
     && composer install \
     && npm install
+
 # Копируем .env.example в .env и генерируем ключ приложения
 RUN cp .env.example .env \
 && mkdir -p database \
