@@ -38,8 +38,7 @@ WORKDIR /home/h4t0rihanzo/hexletProject
 RUN export NVM_DIR="$HOME/.nvm" \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
     && npm ci \
-    && composer install \
-    && npm install
+    && composer install
 
 # Копируем .env.example в .env и генерируем ключ приложения
 RUN cp .env.example .env \
