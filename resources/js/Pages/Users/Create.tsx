@@ -1,5 +1,5 @@
-import React, { useState, FormEvent } from "react";
-import { Inertia } from "@inertiajs/inertia";
+import React from "react";
+import { useForm } from "@inertiajs/inertia-react";
 import { Form, Button, Container } from "react-bootstrap";
 
 interface User {
@@ -15,14 +15,17 @@ interface EditProps {
 }
 
 const Create = () => {
-    const [name, setName] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [gender, setGender] = useState<string>("");
-    const [birthdate, setBirthdate] = useState<string>("");
+    const { data, setData, post, processing, errors } = useForm({
+        name: "",
+        email: "",
+        gender: "",
+        birthdate: "",
+    });
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        Inertia.post("/users", { name, email, gender, birthdate });
+        post;
+        ("/users");
     };
 
     return (
@@ -33,8 +36,10 @@ const Create = () => {
                     <Form.Label>Name</Form.Label>
                     <Form.Control
                         type="text"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
+                        value={data.name}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setData("name", e.target.value)
+                        }
                         placeholder="Name"
                         required
                     />
@@ -43,8 +48,10 @@ const Create = () => {
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                         type="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        value={data.email}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setData("email", e.target.value)
+                        }
                         placeholder="Email"
                         required
                     />
@@ -52,8 +59,10 @@ const Create = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Gender</Form.Label>
                     <Form.Select
-                        value={gender}
-                        onChange={e => setGender(e.target.value)}
+                        value={data.gender}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setData("gender", e.target.value)
+                        }
                         required
                     >
                         <option value="">Choose gender</option>
@@ -65,8 +74,10 @@ const Create = () => {
                     <Form.Label>Birthday</Form.Label>
                     <Form.Control
                         type="date"
-                        value={birthdate}
-                        onChange={e => setBirthdate(e.target.value)}
+                        value={data.birthdate}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setData("birthdate", e.target.value)
+                        }
                         required
                     />
                 </Form.Group>

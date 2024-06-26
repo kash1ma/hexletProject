@@ -37,6 +37,7 @@ WORKDIR /home/h4t0rihanzo/hexletProject
 # Устанавливаем зависимости проекта
 RUN export NVM_DIR="$HOME/.nvm" \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+    && npm install \
     && npm ci \
     && composer install
 

@@ -1,5 +1,5 @@
-import React, { useState, FormEvent } from "react";
-import { Inertia } from "@inertiajs/inertia";
+import React from "react";
+import { useForm } from "@inertiajs/inertia-react";
 import { Form, Button, Container } from "react-bootstrap";
 
 interface User {
@@ -15,15 +15,15 @@ interface EditProps {
 }
 
 const Edit: React.FC<EditProps> = ({ user }) => {
-    const [name, setName] = useState(user.name);
-    const [email, setEmail] = useState(user.email);
-    const [gender, setGender] = useState(
-        user.gender === "Мужской" ? "male" : "female"
-    );
-    const [birthdate, setBirthdate] = useState(user.birthdate);
-    const handleSubmit = (e: FormEvent) => {
+    const { data, setData, put, processing, errors } = useForm({
+        name: user.name,
+        email: user.email,
+        gender: user.gender === "Male" ? "male" : "female",
+        birthdate: user.birthdate,
+    });
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        Inertia.put(`/users/${user.id}`, { name, email, gender, birthdate });
+        put(`/users/${user.id}`);
     };
     return (
         <Container>
@@ -33,8 +33,10 @@ const Edit: React.FC<EditProps> = ({ user }) => {
                     <Form.Label>Name</Form.Label>
                     <Form.Control
                         type="text"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
+                        value={data.name}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setData("name", e.target.value)
+                        }
                         placeholder="Name"
                         required
                     />
@@ -43,8 +45,10 @@ const Edit: React.FC<EditProps> = ({ user }) => {
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                         type="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        value={data.email}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setData("email", e.target.value)
+                        }
                         placeholder="Email"
                         required
                     />
@@ -52,8 +56,10 @@ const Edit: React.FC<EditProps> = ({ user }) => {
                 <Form.Group className="mb-3">
                     <Form.Label>Gender</Form.Label>
                     <Form.Select
-                        value={gender}
-                        onChange={e => setGender(e.target.value)}
+                        value={data.gender}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setData("gender", e.target.value)
+                        }
                         required
                     >
                         <option value="">Choose gender</option>
@@ -65,12 +71,14 @@ const Edit: React.FC<EditProps> = ({ user }) => {
                     <Form.Label>Birthday</Form.Label>
                     <Form.Control
                         type="date"
-                        value={birthdate}
-                        onChange={e => setBirthdate(e.target.value)}
+                        value={data.birthdate}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setData("birthdate", e.target.value)
+                        }
                         required
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={processing}>
                     Edit
                 </Button>
             </Form>

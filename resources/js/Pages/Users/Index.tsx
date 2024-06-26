@@ -24,7 +24,7 @@ const Index: React.FC<IndexProps> = ({ users }) => {
         const options: object = {
             year: "numeric",
             month: "2-digit",
-            day: "2-digit"
+            day: "2-digit",
         };
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
@@ -48,7 +48,7 @@ const Index: React.FC<IndexProps> = ({ users }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => (
+                    {users.map((user) => (
                         <tr key={user.id}>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
