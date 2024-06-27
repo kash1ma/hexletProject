@@ -27,7 +27,6 @@
         name: user-crud-app
         state: stopped
         force_kill: yes
-        ignore_errors: yes
 
     - name: Remove existing Docker container
       docker_container:
