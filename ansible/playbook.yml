@@ -42,7 +42,7 @@
     - name: Run the Docker container
       docker_container:
         name: user-crud-app
-        image: user-crud-app:latest
+        image: kash1ma/user-crud-app:latest
         state: started
         restart_policy: always
         ports:
