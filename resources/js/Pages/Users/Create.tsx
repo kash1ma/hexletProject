@@ -2,18 +2,6 @@ import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
 import { Form, Button, Container } from "react-bootstrap";
 
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    gender: string;
-    birthdate: string;
-}
-
-interface EditProps {
-    user: User;
-}
-
 const Create = () => {
     const { data, setData, post, processing, errors } = useForm({
         name: "",
@@ -81,7 +69,7 @@ const Create = () => {
                         required
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={processing}>
                     Create
                 </Button>
             </Form>
