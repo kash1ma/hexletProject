@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on: push
 
@@ -65,9 +65,35 @@ jobs:
 
       - name: Run tests
         run: make test
-  deploy:
+
+  build_and_push:
     runs-on: ubuntu-latest
     needs: [lint, test]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/user-crud-app:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_and_push
 
     steps:
       - name: Checkout code
@@ -92,4 +118,4 @@ jobs:
         env:
           ANSIBLE_HOST_KEY_CHECKING: "false"
         run: |
-          ansible-playbook ansible/playbook.yml -i '51.250.111.163, ' -u h4t0rihanzo
+          ansible-playbook ansible/playbook.yml -i '51.250.111.163,' -u h4t0rihanzo
