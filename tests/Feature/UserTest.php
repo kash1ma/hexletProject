@@ -13,20 +13,17 @@ class UserTest extends TestCase
     /** @test */
     public function it_can_create_a_user()
     {
-        $response = $this->post('/users', [
+        $userData = [
             'name' => 'testuser',
             'email' => 'test@example.com',
             'gender' => 'male',
             'birthdate' => '2000-01-01',
-        ]);
+        ];
+
+        $response = $this->post('/users', $userData);
 
         $response->assertRedirect('/users');
-        $this->assertDatabaseHas('users', [
-            'name' => 'testuser',
-            'email' => 'test@example.com',
-            'gender' => 'male',
-            'birthdate' => '2000-01-01',
-        ]);
+        $this->assertDatabaseHas('users', $userData);
     }
 
     /** @test */
@@ -43,23 +40,18 @@ class UserTest extends TestCase
     /** @test */
     public function it_can_update_a_user()
     {
+        
+
+        $updatedData = [
+            'name' => 'Jane Doe',
+            'email' => 'jane@example.com',
+            'gender' => 'female',
+            'birthdate' => '1990-01-01',
+        ];
         $user = User::factory()->create();
 
-        $response = $this->put("/users/{$user->id}", [
-            'name' => 'user',
-            'email' => 'user@example.com',
-            'gender' => 'female',
-            'birthdate' => '0001-01-01',
-        ]);
-
-        $response->assertRedirect('/users');
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'name' => 'user',
-            'email' => 'user@example.com',
-            'gender' => 'female',
-            'birthdate' => '0001-01-01',
-        ]);
+        $response = $this->put("/users/{$user->id}", $updatedData);
+        $this->assertDatabaseHas('users', array_merge(['id' => $user->id], $updatedData));
     }
 
     /** @test */

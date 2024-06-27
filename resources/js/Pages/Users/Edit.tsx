@@ -21,10 +21,12 @@ const Edit: React.FC<EditProps> = ({ user }) => {
         gender: user.gender === "Male" ? "male" : "female",
         birthdate: user.birthdate,
     });
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         put(`/users/${user.id}`);
     };
+
     return (
         <Container>
             <h1 className="my-4">Edit user</h1>

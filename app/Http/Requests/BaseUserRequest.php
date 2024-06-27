@@ -27,7 +27,7 @@ class BaseUserRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users' . $userId,
+            'email' => 'required|email|unique:users,email,' . $userId,
             'gender' => 'required|in:male,female',
             'birthdate' => 'required|date',
         ];

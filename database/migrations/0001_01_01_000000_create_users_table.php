@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // ФИО
+            $table->string('name'); 
             $table->string('email')->unique();
-            $table->string('gender'); // Пол
-            $table->date('birthdate'); // Дата рождения
-            $table->rememberToken(); // Токен для "запомнить меня"
+            $table->string('gender'); 
+            $table->date('birthdate'); 
+            $table->rememberToken(); 
             $table->timestamps();
         });
     }
