@@ -32,7 +32,6 @@
       docker_container:
         name: user-crud-app
         state: absent
-        ignore_errors: yes
 
     - name: Pull the latest Docker image
       docker_image:
