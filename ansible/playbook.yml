@@ -46,6 +46,9 @@
         dest: /home/h4t0rihanzo/hexletProject/
         version: master
 
+    - name: Install dependencies
+      command: chdir /home/h4t0rihanzo/hexletProject make install
+
     - name: Build Docker
       command: docker build -t user-crud-app /home/h4t0rihanzo/hexletProject
 
