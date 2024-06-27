@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Requests\BaseUserRequest;
 
 class UserController extends Controller
 {
@@ -29,16 +30,10 @@ class UserController extends Controller
     /**
      * Store a newly created user in storage.
      */
-    public function store(Request $request)
+    public function store(BaseUserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'gender' => 'required|string',
-            'birthdate' => 'required|date',
-        ]);
-
-        User::create($request->all());
+        // Retrieve the validated input data...
+        User::create($request->validated());
 
         return redirect()->route('users.index');
     }
@@ -54,16 +49,9 @@ class UserController extends Controller
     /**
      * Update the specified user in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(BaseUserRequest $request, User $user)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'gender' => 'required|string',
-            'birthdate' => 'required|date',
-        ]);
-
-        $user->update($request->all());
+        $user->update($request->validated());
 
         return redirect()->route('users.index');
     }
