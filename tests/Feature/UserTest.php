@@ -40,7 +40,6 @@ class UserTest extends TestCase
     /** @test */
     public function it_can_update_a_user()
     {
-        
 
         $updatedData = [
             'name' => 'Jane Doe',
