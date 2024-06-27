@@ -13,21 +13,8 @@
         state: present
       loop:
         - curl
-        - sqlite3
-        - php8.3
-        - php8.3-sqlite3
-        - php8.3-xml
-        - apache2
-
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-
-    - name: Install Docker Compose
-      apt:
-        name: docker-compose
-        state: present
+        - docker.io
+        - docker-compose
 
     - name: Ensure Docker service is running
       service:
@@ -35,73 +22,36 @@
         state: started
         enabled: yes
 
-    - name: Stop Apache
-      service:
-        name: apache2
+    - name: Stop existing Docker container
+      docker_container:
+        name: user-crud-app
         state: stopped
+        force_kill: yes
+        ignore_errors: yes
 
-    - name: check dir
-      command: pwd
+    - name: Remove existing Docker container
+      docker_container:
+        name: user-crud-app
+        state: absent
+        ignore_errors: yes
 
-    - name: Clone the repository
-      git:
-        repo: "https://github.com/kash1ma/hexletProject"
-        dest: /home/h4t0rihanzo/hexletProject/
-        version: master
-
-    - name: Install dependencies
-      command: cd /hexletProject make install
-
-    - name: Build Docker
-      command: docker build -t user-crud-app /home/h4t0rihanzo/hexletProject
+    - name: Pull the latest Docker image
+      docker_image:
+        name: your_dockerhub_username/user-crud-app
+        tag: latest
+        source: pull
 
     - name: Run the Docker container
       docker_container:
         name: user-crud-app
-        image: user-crud-app
+        image: your_dockerhub_username/user-crud-app:latest
         state: started
         restart_policy: always
         ports:
           - "80:80"
 
-    - name: Ensure Apache is running on port 8080
-      copy:
-        dest: /etc/apache2/ports.conf
-        content: |
-          Listen 8080
-      notify:
-        - Restart Apache
-
-    - name: Create Apache config
-      copy:
-        dest: /etc/apache2/sites-available/hexletJob.conf
-        content: |
-          <VirtualHost *:8080>
-              ServerName 51.250.111.163
-              DocumentRoot /home/h4t0rihanzo/hexletProject/public
-              <Directory /home/h4t0rihanzo/hexletProject/public>
-                  Options Indexes FollowSymLinks
-                  AllowOverride All
-                  Require all granted
-              </Directory>
-              ErrorLog ${APACHE_LOG_DIR}/error.log
-              CustomLog ${APACHE_LOG_DIR}/access.log combined
-          </VirtualHost>
-      notify:
-        - Restart Apache
-
-    - name: Enable Apache site
-      command: a2ensite hexletJob
-      notify:
-        - Restart Apache
-
-    - name: Enable Apache rewrite module
-      command: a2enmod rewrite
-      notify:
-        - Restart Apache
-
   handlers:
-    - name: Restart Apache
+    - name: Restart Docker
       service:
-        name: apache2
+        name: docker
         state: restarted

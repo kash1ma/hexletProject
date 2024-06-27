@@ -1,7 +1,7 @@
-# Используем официальный образ PHP
+# Use the official PHP image as the base image
 FROM php:8.3-apache
 
-# Устанавливаем необходимые зависимости
+# Install necessary dependencies
 RUN apt-get update && apt-get install -y \
     curl \
     sqlite3 \
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && docker-php-ext-install pdo_sqlite
 
-# Устанавливаем Node.js через nvm
+# Install Node.js via nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash \
     && export NVM_DIR="$HOME/.nvm" \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
@@ -21,27 +21,27 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | b
     && nvm alias default 18 \
     && npm install -g npm
 
-# Устанавливаем Composer
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Копируем файлы проекта в контейнер
+# Copy application files
 COPY . /home/h4t0rihanzo/hexletProject
 
-# Устанавливаем права на папку проекта
-RUN chown -R www-data:www-data /home/h4t0rihanzo/hexletProject \
-    && chmod -R 777 /home/h4t0rihanzo/hexletProject
-
-# Устанавливаем рабочую директорию
+# Set working directory
 WORKDIR /home/h4t0rihanzo/hexletProject
 
-# Устанавливаем зависимости проекта
+# Install application dependencies
 RUN export NVM_DIR="$HOME/.nvm" \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
     && npm install \
     && npm ci \
     && composer install
 
-# Копируем .env.example в .env и генерируем ключ приложения
+# Set permissions
+RUN chown -R www-data:www-data /home/h4t0rihanzo/hexletProject \
+    && chmod -R 777 /home/h4t0rihanzo/hexletProject
+
+# Set up environment and generate application key
 RUN cp .env.example .env \
     && mkdir -p database \
     && echo 'DB_DATABASE=/home/h4t0rihanzo/hexletProject/database/database.sqlite' >> .env \
@@ -50,15 +50,15 @@ RUN cp .env.example .env \
     && chmod -R 777 /home/h4t0rihanzo/hexletProject/database \
     && php artisan key:generate
 
-# Выполняем миграции
+# Run migrations
 RUN php artisan migrate
 
-# Сборка Vite
+# Build frontend assets
 RUN export NVM_DIR="$HOME/.nvm" \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
     && npm run build
 
-# Настраиваем Apache
+# Configure Apache
 RUN echo '<VirtualHost *:80>\n\
     ServerName 51.250.111.163\n\
     DocumentRoot /home/h4t0rihanzo/hexletProject/public\n\
