@@ -24,13 +24,13 @@
 
     - name: Stop existing Docker container
       docker_container:
-        name: user-crud-app
+        name: kash1ma/user-crud-app
         state: stopped
         force_kill: yes
 
     - name: Remove existing Docker container
       docker_container:
-        name: user-crud-app
+        name: kash1ma/user-crud-app
         state: absent
 
     - name: Pull the latest Docker image

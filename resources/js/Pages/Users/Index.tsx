@@ -33,6 +33,7 @@ const Index: React.FC<IndexProps> = ({ users }) => {
         <Container>
             <h1>Users</h1>
             <h1>PISEC</h1>
+            <h1>WHERE IS MY MIND...</h1>
             <InertiaLink href="/users/create">
                 <Button variant="primary" className="mb-3">
                     Create User
