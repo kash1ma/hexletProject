@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Http\Requests\BaseUserRequest;
+use App\Models\User;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
