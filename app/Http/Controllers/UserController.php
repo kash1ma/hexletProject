@@ -34,7 +34,8 @@ class UserController extends Controller
         // Retrieve the validated input data...
         User::create($request->validated());
 
-        return redirect()->route('users.index');
+        return redirect(route('users.index'));
+
     }
 
     /**
@@ -52,7 +53,7 @@ class UserController extends Controller
     {
         $user->update($request->validated());
 
-        return redirect()->route('users.index');
+        return redirect(route('users.index'));
     }
 
     /**
@@ -62,6 +63,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('users.index');
+        return redirect(route('users.index'));
     }
 }

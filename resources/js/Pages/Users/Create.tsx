@@ -12,7 +12,7 @@ const Create = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post("/users");
+        post(route("users.store"));
     };
 
     return (

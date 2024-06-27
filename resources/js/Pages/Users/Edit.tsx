@@ -24,7 +24,7 @@ const Edit: React.FC<EditProps> = ({ user }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/users/${user.id}`);
+        put(route("users.update", user.id));
     };
 
     return (
