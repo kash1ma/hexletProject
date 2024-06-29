@@ -48,8 +48,8 @@
         ports:
           - "80:80"
 
-  handlers:
-    - name: Restart Docker
-      service:
-        name: docker
-        state: restarted
+    handlers:
+      - name: Restart Docker
+        service:
+          name: docker
+          state: restarted
