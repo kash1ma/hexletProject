@@ -21,6 +21,7 @@ const Index: React.FC<IndexProps> = ({ users }) => {
     return (
         <Container>
             <h1>{t("user_list")}</h1>
+            <h2>heyyo man</h2>
             <InertiaLink href="/users/create">
                 <Button variant="primary" className="mb-3">
                     {t("create_user")}
