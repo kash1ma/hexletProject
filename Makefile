@@ -5,6 +5,6 @@ test:
 install: 
 	composer install --prefer-dist --no-progress --no-interaction && npm ci
 lint:
-	vendor/bin/duster lint
+	composer exec duster lint
 lint-fix:
-	vendor/bin/duster fix
+	composer exec duster fix

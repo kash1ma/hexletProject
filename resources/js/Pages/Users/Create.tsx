@@ -1,8 +1,10 @@
 import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
 import { Form, Button, Container } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const Create = () => {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
         name: "",
         email: "",
@@ -17,7 +19,7 @@ const Create = () => {
 
     return (
         <Container>
-            <h1 className="my-4">Create User</h1>
+            <h1 className="my-4">{t("create_user")}</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
@@ -69,7 +71,7 @@ const Create = () => {
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit" disabled={processing}>
-                    Create
+                    {t("create_user")}
                 </Button>
             </Form>
         </Container>

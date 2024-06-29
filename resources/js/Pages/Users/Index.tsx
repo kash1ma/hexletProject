@@ -1,22 +1,11 @@
 import React from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { InertiaLink } from "@inertiajs/inertia-react";
-
+import { useTranslation } from "react-i18next";
 import { Button, Table, Container } from "react-bootstrap";
 
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    gender: string;
-    birthdate: string;
-}
-
-interface IndexProps {
-    users: User[];
-}
-
 const Index: React.FC<IndexProps> = ({ users }) => {
+    const { t } = useTranslation();
     const handleDelete = (id: number) => {
         Inertia.delete(`/users/${id}`);
     };
@@ -31,22 +20,20 @@ const Index: React.FC<IndexProps> = ({ users }) => {
 
     return (
         <Container>
-            <h1>Users</h1>
-            <h1>PISEC</h1>
-            <h1>WHERE IS MY MIND...</h1>
+            <h1>{t("user_list")}</h1>
             <InertiaLink href="/users/create">
                 <Button variant="primary" className="mb-3">
-                    Create User
+                    {t("create_user")}
                 </Button>
             </InertiaLink>
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Gender</th>
-                        <th>Birthdate</th>
-                        <th>Actions</th>
+                        <th>{t("name")}</th>
+                        <th>{t("email")}</th>
+                        <th>{t("gender")}</th>
+                        <th>{t("birthdate")}</th>
+                        <th>{t("actions")}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,7 +57,7 @@ const Index: React.FC<IndexProps> = ({ users }) => {
                                     variant="danger"
                                     onClick={() => handleDelete(user.id)}
                                 >
-                                    Delete
+                                    {t("delete_user")}
                                 </Button>
                             </td>
                         </tr>

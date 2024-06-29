@@ -1,20 +1,10 @@
 import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
 import { Form, Button, Container } from "react-bootstrap";
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    gender: string;
-    birthdate: string;
-}
-
-interface EditProps {
-    user: User;
-}
+import { useTranslation } from "react-i18next";
 
 const Edit: React.FC<EditProps> = ({ user }) => {
+    const { t } = useTranslation();
     const { data, setData, put, processing, errors } = useForm({
         name: user.name,
         email: user.email,
@@ -29,7 +19,7 @@ const Edit: React.FC<EditProps> = ({ user }) => {
 
     return (
         <Container>
-            <h1 className="my-4">Edit user</h1>
+            <h1 className="my-4">{t("edit_user")}</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
@@ -81,7 +71,7 @@ const Edit: React.FC<EditProps> = ({ user }) => {
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit" disabled={processing}>
-                    Edit
+                    {t("save")}
                 </Button>
             </Form>
         </Container>

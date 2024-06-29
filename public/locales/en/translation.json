@@ -1,0 +1,20 @@
+{
+    "create_user": "Create user",
+    "edit_user": "Edit user",
+    "delete_user": "Delete user",
+    "user_list": "Users",
+    "name": "Name",
+    "email": "EMail",
+    "gender": "Gender",
+    "birthday": "Birthday",
+    "actions": "Actions",
+    "male": "Male",
+    "female": "Female",
+    "avatar": "PFP",
+    "select_gender": "Choose gender",
+    "state": "State",
+    "banned": "Banned",
+    "active": "Active",
+    "delete_user_forever": "Delete user forever",
+    "save": "Save"
+}
