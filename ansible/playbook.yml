@@ -22,6 +22,12 @@
         state: started
         enabled: yes
 
+    - name: Pull the latest Docker image
+      docker_image:
+        name: kash1ma/user-crud-app
+        tag: latest
+        source: pull
+
     - name: Stop existing Docker container
       docker_container:
         name: user-crud-app
@@ -32,12 +38,6 @@
       docker_container:
         name: user-crud-app
         state: absent
-
-    - name: Pull the latest Docker image
-      docker_image:
-        name: kash1ma/user-crud-app
-        tag: latest
-        source: pull
 
     - name: Run the Docker container
       docker_container:
