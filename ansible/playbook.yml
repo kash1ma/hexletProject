@@ -22,6 +22,10 @@
         state: started
         enabled: yes
 
+    - name: Check if Docker container exists
+      shell: docker ps -a --filter "name=user-crud-app" --format "{{'{{'}}.Names{{'}}'}}"
+      register: container_exists
+
     - name: Stop existing Docker container
       docker_container:
         name: user-crud-app
