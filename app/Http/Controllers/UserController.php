@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BaseUserRequest;
 use App\Models\User;
+use App\States\Active;
+use App\States\Banned;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -13,9 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
 
-        return Inertia::render('Users/Index', ['users' => $users]);
+        return Inertia::render('Users/Index', ['users' => User::withTrashed()->get()]);
     }
 
     /**
@@ -62,6 +63,38 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
+        return redirect(route('users.index'));
+    }
+
+    public function ban($id)
+    {
+        $user = User::findOrFail($id);
+        $user->state->transitionTo(Banned::class);
+
+        return redirect(route('users.index'));
+    }
+
+    public function unban($id)
+    {
+        $user = User::findOrFail($id);
+        $user->state->transitionTo(Active::class);
+
+        return redirect(route('users.index'));
+    }
+
+    public function restore($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect(route('users.index'));
+    }
+
+    public function forceDelete($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        $user->forceDelete();
 
         return redirect(route('users.index'));
     }

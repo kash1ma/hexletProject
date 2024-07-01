@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\States\UserState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\ModelStates\HasStates;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes, HasStates;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +24,8 @@ class User extends Authenticatable
         'email',
         'gender',
         'birthdate',
+        'password',
+        'state',
     ];
 
     /**
@@ -30,6 +35,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'remember_token',
+        'password',
     ];
 
     /**
@@ -38,8 +44,10 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
         'birthdate' => 'date:Y-m-d',
+        'state' => UserState::class,
+        'deleted_at' => 'datetime',
     ];
 
     /**
@@ -47,6 +55,8 @@ class User extends Authenticatable
      *
      * @return string
      */
+    protected $dates = ['deleted_at'];
+
     public function getGenderAttribute($value)
     {
         return ucfirst($value);
