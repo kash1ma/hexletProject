@@ -11,7 +11,7 @@ use Spatie\ModelStates\HasStates;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes, HasStates;
+    use HasFactory, HasStates, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -55,8 +55,6 @@ class User extends Authenticatable
      *
      * @return string
      */
-    protected $dates = ['deleted_at'];
-
     public function getGenderAttribute($value)
     {
         return ucfirst($value);
