@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('state')->default('active')->after('avatar');
+            $table->string('state')->default('active')->after('pictures');
         });
     }
 
