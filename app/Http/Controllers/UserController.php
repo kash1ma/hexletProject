@@ -59,8 +59,6 @@ class UserController extends Controller
     /**
      * Update the specified user in storage.
      *
-     * @param  \App\Http\Requests\BaseUserRequest  $request
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(BaseUserRequest $request, User $user)
