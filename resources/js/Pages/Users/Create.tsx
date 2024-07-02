@@ -10,11 +10,24 @@ const Create = () => {
         email: "",
         gender: "",
         birthdate: "",
+        picture: null as File | null, // Added for picture
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("users.store"));
+        const formData = new FormData();
+        Object.keys(data).forEach((key) => {
+            formData.append(
+                key,
+                data[key as keyof typeof data] as string | Blob
+            );
+        });
+        post(route("users.store"), {
+            data: formData,
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     };
 
     return (
@@ -68,6 +81,19 @@ const Create = () => {
                             setData("birthdate", e.target.value)
                         }
                         required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>{t("picture")}</Form.Label>
+                    <Form.Control
+                        type="file"
+                        name="picture"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setData(
+                                "picture",
+                                e.target.files ? e.target.files[0] : null
+                            )
+                        }
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit" disabled={processing}>

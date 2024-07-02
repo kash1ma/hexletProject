@@ -47,6 +47,7 @@ const Index: React.FC<IndexProps> = ({ users }) => {
             <Table striped bordered hover>
                 <thead>
                     <tr>
+                        <th>{t("picture")}</th>
                         <th>{t("name")}</th>
                         <th>{t("email")}</th>
                         <th>{t("gender")}</th>
@@ -58,6 +59,18 @@ const Index: React.FC<IndexProps> = ({ users }) => {
                 <tbody>
                     {users.map((user) => (
                         <tr key={user.id}>
+                            <td>
+                                {user.picture && (
+                                    <img
+                                        src={`/storage/${user.picture}`}
+                                        alt={user.name}
+                                        style={{
+                                            width: "100px",
+                                            height: "100px",
+                                        }}
+                                    />
+                                )}
+                            </td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{user.gender}</td>
@@ -90,15 +103,22 @@ const Index: React.FC<IndexProps> = ({ users }) => {
                                     </>
                                 ) : (
                                     <>
-                                        <Button
-                                            variant="warning"
-                                            href={route("users.edit", {
-                                                id: user.id,
-                                            })}
-                                            className="me-2"
-                                        >
-                                            {t("edit_user")}
-                                        </Button>
+                                        {user.state !==
+                                        "App\\States\\Banned" ? (
+                                            <Button
+                                                variant="warning"
+                                                href={route("users.edit", {
+                                                    id: user.id,
+                                                })}
+                                                className="me-2"
+                                            >
+                                                {t("edit_user")}
+                                            </Button>
+                                        ) : (
+                                            <span className="text-muted me-2">
+                                                {t("edit_not_allowed")}
+                                            </span>
+                                        )}
                                         <Button
                                             variant="danger"
                                             onClick={() =>

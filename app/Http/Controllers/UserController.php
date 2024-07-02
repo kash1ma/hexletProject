@@ -6,6 +6,7 @@ use App\Http\Requests\BaseUserRequest;
 use App\Models\User;
 use App\States\Active;
 use App\States\Banned;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -32,8 +33,12 @@ class UserController extends Controller
      */
     public function store(BaseUserRequest $request)
     {
+        $data = $request->validated();
+        if ($request->hasFile('picture')) {
+            $data['picture'] = $request->file('picture')->store('pictures', 'public');
+        }
         // Retrieve the validated input data...
-        User::create($request->validated());
+        User::create($data);
 
         return redirect(route('users.index'));
 
@@ -44,6 +49,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if ($user->state instanceof Banned) {
+            return redirect(route('users.index'))->with('error', 'Banned users cannot be edited.');
+        }
+
         return Inertia::render('Users/Edit', ['user' => $user]);
     }
 
@@ -52,7 +61,17 @@ class UserController extends Controller
      */
     public function update(BaseUserRequest $request, User $user)
     {
-        $user->update($request->validated());
+        if ($user->state instanceof Banned) {
+            return redirect(route('users.index'))->with('error', 'Banned users cannot be edited.');
+        }
+
+        $data = $request->validated();
+
+        if ($request->hasFile('picture')) {
+            $data['picture'] = $request->file('picture')->store('pictures', 'public');
+        }
+
+        $user->update($data);
 
         return redirect(route('users.index'));
     }

@@ -39,7 +39,8 @@ RUN export NVM_DIR="$HOME/.nvm" \
 
 # Set permissions
 RUN chown -R www-data:www-data /home/h4t0rihanzo/hexletProject \
-    && chmod -R 777 /home/h4t0rihanzo/hexletProject
+    && chmod -R 777 /home/h4t0rihanzo/hexletProject \
+    && php artisan storage:link
 
 # Set up environment and generate application key
 RUN cp .env.example .env \

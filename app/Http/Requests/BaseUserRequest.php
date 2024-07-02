@@ -30,6 +30,7 @@ class BaseUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email,' . $userId,
             'gender' => 'required|in:male,female',
             'birthdate' => 'required|date',
+            'picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 

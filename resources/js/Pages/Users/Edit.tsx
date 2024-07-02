@@ -10,11 +10,24 @@ const Edit: React.FC<EditProps> = ({ user }) => {
         email: user.email,
         gender: user.gender === "Male" ? "male" : "female",
         birthdate: user.birthdate,
+        picture: null as File | null, // Added for picture
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(route("users.update", user.id));
+        const formData = new FormData();
+        Object.keys(data).forEach((key) => {
+            formData.append(
+                key,
+                data[key as keyof typeof data] as string | Blob
+            );
+        });
+        put(route("users.update", { id: user.id }), {
+            data: formData,
+            headers: {
+                "X-HTTP-Method-Override": "PUT",
+            },
+        });
     };
 
     return (
@@ -69,6 +82,26 @@ const Edit: React.FC<EditProps> = ({ user }) => {
                         }
                         required
                     />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>{t("picture")}</Form.Label>
+                    <Form.Control
+                        type="file"
+                        name="picture"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setData(
+                                "picture",
+                                e.target.files ? e.target.files[0] : null
+                            )
+                        }
+                    />
+                    {user.picture && (
+                        <img
+                            src={`/storage/${user.picture}`}
+                            alt="picture"
+                            style={{ width: "100px", marginTop: "10px" }}
+                        />
+                    )}
                 </Form.Group>
                 <Button variant="primary" type="submit" disabled={processing}>
                     {t("save")}
