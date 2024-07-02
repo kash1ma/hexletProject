@@ -16,3 +16,7 @@ interface IndexProps {
 interface EditProps {
     user: User;
 }
+
+interface RegistrationProps {
+    user: User[];
+}

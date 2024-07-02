@@ -3,19 +3,6 @@ import { useForm } from "@inertiajs/inertia-react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    gender: string;
-    birthdate: string;
-    picture: string | null;
-}
-
-interface EditProps {
-    user: User;
-}
-
 const Edit: React.FC<EditProps> = ({ user }) => {
     const { t } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
