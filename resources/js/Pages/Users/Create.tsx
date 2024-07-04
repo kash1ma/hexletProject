@@ -94,6 +94,7 @@ const Create = () => {
                                 e.target.files ? e.target.files[0] : null
                             )
                         }
+                        required
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit" disabled={processing}>
